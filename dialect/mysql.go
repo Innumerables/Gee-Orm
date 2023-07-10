@@ -6,15 +6,15 @@ import (
 	"time"
 )
 
-type mysql3 struct{}
+type mysql struct{}
 
-var _ Dialect = (*mysql3)(nil)
+var _ Dialect = (*mysql)(nil)
 
 func init() {
-	RegisterDialect("mysql3", &mysql3{})
+	RegisterDialect("mysql", &mysql{})
 }
 
-func (m *mysql3) DataTypeOf(typ reflect.Value) string {
+func (m *mysql) DataTypeOf(typ reflect.Value) string {
 	switch typ.Kind() {
 	case reflect.Bool:
 		return "bool"
@@ -50,7 +50,7 @@ func (m *mysql3) DataTypeOf(typ reflect.Value) string {
 	panic(fmt.Sprintf("invalid sql type %s (%s)", typ.Type().Name(), typ.Kind()))
 }
 
-func (m *mysql3) TableExistSQL(tableName string) (string, []interface{}) {
+func (m *mysql) TableExistSQL(tableName string) (string, []interface{}) {
 	args := []interface{}{tableName}
 	return "SELECT name FROM sqlite_master WHERE type='table' and name = ?", args
 }
