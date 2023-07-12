@@ -1,5 +1,6 @@
 package geeorm
 
+//交互前的准备工作，连接/测试数据库。关闭连接
 import (
 	"database/sql"
 	"gee-orm/dialect"

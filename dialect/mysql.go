@@ -1,5 +1,6 @@
 package dialect
 
+//GO语言类型映射为数据库中的类型
 import (
 	"fmt"
 	"reflect"

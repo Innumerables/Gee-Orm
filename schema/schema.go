@@ -1,5 +1,6 @@
 package schema
 
+//对象和表的转换，转换为关系数据库中的表结构
 import (
 	"gee-orm/dialect"
 	"go/ast"

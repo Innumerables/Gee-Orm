@@ -1,7 +1,9 @@
 package session
 
+//session用于实现和数据库交互
 import (
 	"database/sql"
+	"gee-orm/clause"
 	"gee-orm/dialect"
 	"gee-orm/log"
 	"gee-orm/schema"
@@ -17,6 +19,8 @@ type Session struct {
 
 	dialect  dialect.Dialect
 	refTable *schema.Schema
+
+	clause clause.Clause
 }
 
 func New(db *sql.DB, dialect dialect.Dialect) *Session {
@@ -28,6 +32,7 @@ func New(db *sql.DB, dialect dialect.Dialect) *Session {
 func (s *Session) Clear() {
 	s.sql.Reset()
 	s.sqlVars = nil
+	s.clause = clause.Clause{}
 }
 
 func (s *Session) DB() *sql.DB {

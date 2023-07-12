@@ -1,6 +1,7 @@
 package schema
 
 import (
+	"fmt"
 	"gee-orm/dialect"
 	"testing"
 )
@@ -45,6 +46,7 @@ func (u *UserTest) TableName() string {
 
 func TestSchema_TableName(t *testing.T) {
 	schema := Parse(&UserTest{}, TestDial)
+	fmt.Println(schema)
 	if schema.Name != "ns_user_test" || len(schema.Fields) != 2 {
 		t.Fatal("failed to parse User struct")
 	}
