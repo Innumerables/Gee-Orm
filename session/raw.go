@@ -21,7 +21,19 @@ type Session struct {
 	refTable *schema.Schema
 
 	clause clause.Clause
+
+	tx *sql.Tx //支持事务
 }
+type CommonDB interface {
+	Query(query string, args ...interface{}) (*sql.Rows, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	Exec(query string, args ...interface{}) (sql.Result, error)
+}
+
+// _ CommonDB表示声明了一个类型为CommonDB的变量，但使用了下划线 _来忽略它的值。
+// (*sql.DB)(nil)和(*sql.Tx)(nil)是将nil转换为对应类型的指针,这样的赋值表达式实际上是为了确保*sql.DB和*sql.Tx类型都实现了CommonDB接口。
+var _ CommonDB = (*sql.DB)(nil)
+var _ CommonDB = (*sql.Tx)(nil)
 
 func New(db *sql.DB, dialect dialect.Dialect) *Session {
 	return &Session{db: db,
@@ -35,7 +47,10 @@ func (s *Session) Clear() {
 	s.clause = clause.Clause{}
 }
 
-func (s *Session) DB() *sql.DB {
+func (s *Session) DB() CommonDB {
+	if s.tx != nil {
+		return s.tx
+	}
 	return s.db
 }
 
